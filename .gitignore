@@ -1,0 +1,39 @@
+# Environment variables - never commit these
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+venv/
+env/
+.venv/
+
+# Spark
+*.jar
+.ivy2/
+spark-warehouse/
+
+# Data files - too large for git
+data/
+*.csv
+*.json
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Docker volumes (local only)
+postgres_data/

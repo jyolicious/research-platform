@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+pyspark
+redis
+python-jose[cryptography]
+python-docx
+pgvector
+sentence-transformers
+httpx
+python-dotenv
+google-auth
+passlib
+python-multipart
