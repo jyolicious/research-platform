@@ -1,4 +1,4 @@
-# Research Platform — DBMS Project
+# PaperLens — DBMS Project
 
 A real-time research paper platform built with Apache Spark, PostgreSQL, Redis, pgvector, and FastAPI.
 
