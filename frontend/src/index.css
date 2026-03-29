@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --navy: #0a1628;
+  --navy-mid: #112240;
+  --navy-light: #1d3557;
+  --blue: #1565c0;
+  --blue-bright: #1976d2;
+  --blue-accent: #42a5f5;
+  --gold: #c9a84c;
+  --gold-light: #f0c96a;
+  --white: #f8f9ff;
+  --gray-100: #e8eaf0;
+  --gray-300: #9aa3b8;
+  --gray-500: #5a6480;
+  --text-primary: #f0f4ff;
+  --text-secondary: #9aa3b8;
+  --border: rgba(255,255,255,0.08);
+  --card-bg: rgba(17, 34, 64, 0.6);
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; font-family: var(--font-body); }

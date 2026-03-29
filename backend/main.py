@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from database import test_connection
 from redis_client import test_redis
 from routes import papers
+from routes import auth
 
 
 app = FastAPI(title="Research Platform API")
@@ -24,3 +25,4 @@ def startup():
 def root():
     return {"status": "running"}
 app.include_router(papers.router, prefix="/papers", tags=["papers"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
