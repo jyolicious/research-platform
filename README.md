@@ -46,6 +46,8 @@ pgvector, FastAPI, and React. Fine-tuned distilgpt2 model for AI-assisted academ
 ---
 
 ## Project Structure
+
+```bash
 research-platform/
 ├── backend/
 │   ├── main.py                  # FastAPI app — all routers registered
@@ -103,9 +105,6 @@ research-platform/
 ├── init-replication.sh          # Creates replicator user on startup
 ├── requirements.txt
 └── .env                         # Never committed
-
-
----
 
 ## Setup Instructions
 
