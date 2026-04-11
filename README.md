@@ -105,6 +105,9 @@ research-platform/
 ├── init-replication.sh          # Creates replicator user on startup
 ├── requirements.txt
 └── .env                         # Never committed
+```
+
+---
 
 ## Setup Instructions
 
@@ -123,12 +126,15 @@ cd research-platform
 ```
 
 ### 2. Create `.env` in `backend/` folder
+
+```env
 DATABASE_URL=postgresql://admin:secret@localhost:5433/research_db
 REPLICA_URL=postgresql://admin:secret@localhost:5434/research_db
 REDIS_URL=redis://localhost:6379
 GOOGLE_CLIENT_ID=your_google_client_id
 JWT_SECRET=your_long_random_jwt_secret
 ANTHROPIC_API_KEY=your_anthropic_key
+```
 
 ### 3. Start Docker containers
 
@@ -153,12 +159,14 @@ pip install -r requirements.txt
 ### 6. Run Spark batch job (loads DBLP dataset)
 
 Set Java 17 and Hadoop first (Windows):
+
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.18.8-hotspot"
 $env:HADOOP_HOME = "C:\hadoop"
 ```
 
 Then run:
+
 ```bash
 cd backend/spark_jobs
 python batch_load.py
@@ -172,8 +180,8 @@ cd backend
 uvicorn main:app --reload --port 8000
 ```
 
-API: `http://localhost:8000`
-Swagger docs: `http://localhost:8000/docs`
+- API: `http://localhost:8000`
+- Swagger docs: `http://localhost:8000/docs`
 
 ### 8. Set up and start the frontend
 
@@ -186,6 +194,7 @@ npm run dev
 Frontend: `http://localhost:5173`
 
 Update `frontend/src/main.jsx` with your Google Client ID:
+
 ```jsx
 <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
 ```
@@ -259,6 +268,7 @@ python train.py
 ## Key DBMS Concepts Demonstrated
 
 ### Indexing proof
+
 ```sql
 -- With GIN index: Bitmap Index Scan, 1165ms
 -- Without index: Seq Scan on 999,064 rows, 12376ms
@@ -274,15 +284,19 @@ WHERE to_tsvector('english', title || ' ' || abstract)
 - **pgvector** — chosen over separate Qdrant for transactional consistency — vector search and relational queries in one SQL statement
 
 ### Write-behind cache pattern (drafts)
+
+```
 User keystroke → debounce 5s → POST /drafts
-↓
+        ↓
 Write to Redis (instant)
-↓
+        ↓
 Write to Postgres (async)
-↓
+        ↓
 Invalidate cache key
+```
 
 ### Version history (append-only)
+
 Every PUT to `/drafts/{id}` creates a new row in `draft_versions` — never updates. This gives full audit trail and point-in-time recovery. Immutable snapshots are a standard pattern in event-sourced systems.
 
 ---
