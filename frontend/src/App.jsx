@@ -6,6 +6,7 @@ import Editor from './pages/Editor'
 import Dashboard from './pages/Dashboard'
 import ProtectedRoute from './components/ProtectedRoute'
 import PaperDetail from './pages/PaperDetail'
+import Drafts from './pages/Drafts'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
           <ProtectedRoute><Editor /></ProtectedRoute>
         } />
         <Route path="/papers/:id" element={<ProtectedRoute><PaperDetail /></ProtectedRoute>} />
+        <Route path="/drafts" element={<ProtectedRoute><Drafts /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )

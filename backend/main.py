@@ -6,6 +6,7 @@ from routes import papers
 from routes import auth
 from routes import ai
 from routes import stats
+from routes import papers, drafts, auth, ai, export, stats
 
 
 app = FastAPI(title="Research Platform API")
@@ -34,3 +35,5 @@ app.include_router(papers.router, prefix="/papers", tags=["papers"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(ai.router, prefix="/ai", tags=["ai"])
 app.include_router(stats.router, prefix="/stats", tags=["stats"])
+app.include_router(drafts.router,  prefix="/drafts", tags=["drafts"])
+app.include_router(export.router,  prefix="/drafts", tags=["export"])

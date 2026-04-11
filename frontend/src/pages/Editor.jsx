@@ -21,26 +21,50 @@ export default function Editor() {
   const textareaRef = useRef(null)
 
   // Auto-save every 5 seconds
-  const saveDraft = useCallback(async (t, c) => {
-    setSaveStatus('saving...')
-    try {
-      const words = c.trim().split(/\s+/).filter(Boolean).length
-      if (!draftId) {
-        const res = await api.post('/drafts', { title: t, content: { text: c } })
-        setDraftId(res.data.id)
-        navigate(`/editor/${res.data.id}`, { replace: true })
-      } else {
-        await api.put(`/drafts/${draftId}`, {
-          title: t,
-          content: { text: c },
-          word_count: words
-        })
-      }
-      setSaveStatus('saved')
-    } catch {
-      setSaveStatus('error saving')
+const saveDraft = useCallback(async (t, c) => {
+  setSaveStatus('saving...')
+  try {
+    const words = c.trim().split(/\s+/).filter(Boolean).length
+    if (!draftId) {
+      const res = await api.post('/drafts', {
+        title: t || 'Untitled Draft',
+        content: { text: c }
+      })
+      setDraftId(res.data.id)
+      navigate(`/editor/${res.data.id}`, { replace: true })
+    } else {
+      await api.put(`/drafts/${draftId}`, {
+        title: t || 'Untitled Draft',
+        content: { text: c },
+        word_count: words
+      })
     }
-  }, [draftId, navigate])
+    setSaveStatus('saved')
+  } catch (err) {
+    console.error('Save error:', err.response?.data || err.message)
+    setSaveStatus('error saving')
+  }
+}, [draftId, navigate])
+
+  // Load existing draft on mount
+useEffect(() => {
+  if (!id) return
+
+  api.get(`/drafts/${id}`)
+    .then(res => {
+      const data = res.data.data
+
+      setTitle(data.title || '')
+
+      const text = typeof data.content === 'object'
+        ? (data.content?.text || '')
+        : ''
+
+      setContent(text)
+      setSaveStatus('saved')
+    })
+    .catch(err => console.error('Failed to load draft', err))
+}, [id])
 
   // Debounced save
   useEffect(() => {
@@ -81,12 +105,28 @@ export default function Editor() {
     setSuggestion('')
   }
 
-  const downloadDocx = async () => {
-    if (!draftId) return
-    await saveDraft(title, content)
-    window.open(`http://localhost:8000/drafts/${draftId}/download`, '_blank')
+const downloadDocx = async () => {
+  if (!draftId) {
+    alert('Save the draft first before downloading.')
+    return
   }
-
+  await saveDraft(title, content)
+  try {
+    const res = await api.get(`/drafts/${draftId}/download`, {
+      responseType: 'blob'
+    })
+    const url = window.URL.createObjectURL(new Blob([res.data]))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${(title || 'draft').replace(/\s+/g, '_')}.docx`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    window.URL.revokeObjectURL(url)
+  } catch (err) {
+    console.error('Download failed', err)
+  }
+}
   const loadVersions = async () => {
     if (!draftId) return
     const res = await api.get(`/drafts/${draftId}/versions`)

@@ -16,6 +16,7 @@ export default function Navbar() {
         <Link to="/papers">Browse</Link>
         {user && <Link to="/editor">Write</Link>}
         {user && <Link to="/dashboard">Dashboard</Link>}
+        {user && <Link to="/drafts">Drafts</Link>}
       </div>
       <div className="navbar-auth">
         {user ? (
