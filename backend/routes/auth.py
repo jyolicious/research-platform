@@ -4,7 +4,7 @@ from sqlalchemy import text
 from database import get_db
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from jose import jwt
+from jose import jwt, JWTError
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
@@ -69,6 +69,12 @@ async def google_login(data: dict, db: Session = Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
+
+def decode_jwt_token(token: str):
+    try:
+        return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
+    except JWTError:
+        return None
 
 @router.get("/me")
 def get_me(db: Session = Depends(get_db)):

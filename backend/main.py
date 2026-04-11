@@ -5,6 +5,8 @@ from redis_client import test_redis
 from routes import papers
 from routes import auth
 from routes import ai
+from routes import stats
+
 
 app = FastAPI(title="Research Platform API")
 
@@ -31,3 +33,4 @@ def root():
 app.include_router(papers.router, prefix="/papers", tags=["papers"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(ai.router, prefix="/ai", tags=["ai"])
+app.include_router(stats.router, prefix="/stats", tags=["stats"])
